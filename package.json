@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "dev": "bun run ./index.ts"
+    "dev": "bun run ./index.ts",
+    "run": "node ./app.js",
+    "build": "npm install"
   },
   "repository": {
     "type": "git",
@@ -17,7 +19,10 @@
   },
   "homepage": "https://github.com/SlushEE0/SciBot#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "discord-interactions": "^3.4.0",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@types/bun": "latest"
