@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "dev": "bun run ./index.ts",
-    "run": "node ./app.js",
+    "app": "node ./app.js",
     "build": "npm install"
   },
   "repository": {
