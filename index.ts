@@ -1,5 +1,5 @@
 import express from "express";
-import type {Request, Response} from "express"
+import type { Request, Response } from "express";
 import {
   InteractionType,
   InteractionResponseType,
@@ -10,13 +10,13 @@ import {
 
 import "dotenv/config";
 import { PORT } from "./utils/config";
-import { VerifyDiscordRequest } from "./utils/utils";
+import { authorize } from "./utils/utils";
 
 const app = express();
 
-app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
+app.use(express.json({ verify: authorize(process.env.PUBLIC_KEY) }));
 
-app.post("/api/interactions", async function (req: Request, res:Response) {
+app.post("/api/interactions", async function (req: Request, res: Response) {
   const { type, id, data } = req.body;
 
   if (type === InteractionType.PING) {
@@ -27,7 +27,6 @@ app.post("/api/interactions", async function (req: Request, res:Response) {
     const { name } = data;
 
     if (name === "test") {
-
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
