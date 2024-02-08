@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "bun run ./index.ts",
-    "app": "node ./app.js",
+    "app": "npm run build && node ./index.ts",
     "build": "npm install"
   },
   "repository": {
@@ -20,15 +20,17 @@
   },
   "homepage": "https://github.com/SlushEE0/SciBot#readme",
   "dependencies": {
+    "@types/express": "^4.17.21",
     "discord-interactions": "^3.4.0",
     "dotenv": "^16.4.1",
     "express": "^4.18.2",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "ts-node-dev": "^2.0.0"
   },
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.3.3"
   }
 }
