@@ -9,8 +9,10 @@ import {
   type type_command
 } from "./types.js";
 
-const CATEGORIES = ["SCIENCE", "HISTORY", "LITERATURE"];
-type interactionFunc = (req?: Request, res?: Response) => any;
+type interactionFunc = (
+  req: Request,
+  res: Response
+) => Response<any, Record<string, any>>;
 
 let cmdList: type_command[] = [];
 export let interaction: {
@@ -18,31 +20,39 @@ export let interaction: {
   func: interactionFunc;
 }[] = [];
 
-export function addCommand(cmd: type_command, func?: interactionFunc) {
+export function addCommand(cmd: type_command, func: interactionFunc) {
   cmdList.push(cmd as type_command);
 
-  if (func) {
-    interaction.push({
-      name: cmd.name,
-      func
-    });
-  }
+  interaction.push({
+    name: cmd.name,
+    func
+  });
 }
 
-addCommand({
-  name: "quiz",
-  description: "Ill ask you a question!",
-  options: [
-    {
-      name: "category",
-      description: "Pick your category",
-      required: false,
-      choices: [],
-      type: CommandOptionsTypes.STRING
-    }
-  ],
-  type: CommandType.CHAT_INPUT
-});
+addCommand(
+  {
+    name: "quiz",
+    description: "Ill ask you a question!",
+    options: [
+      {
+        name: "category",
+        description: "Pick your category",
+        required: false,
+        choices: [],
+        type: CommandOptionsTypes.STRING
+      }
+    ],
+    type: CommandType.CHAT_INPUT
+  },
+  (req, res) => {
+    return res.send({
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: {
+        content: JSON.stringify("I ran /quiz")
+      }
+    });
+  }
+);
 
 addCommand(
   {
@@ -51,7 +61,7 @@ addCommand(
     type: CommandType.CHAT_INPUT
   },
   (req, res) => {
-    return res?.send({
+    return res.send({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {
         content: JSON.stringify(req?.body)
