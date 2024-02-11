@@ -1,16 +1,11 @@
 import express from "express";
 import type { Request, Response } from "express";
-import {
-  InteractionType,
-  InteractionResponseType,
-  InteractionResponseFlags,
-  MessageComponentTypes,
-  ButtonStyleTypes
-} from "discord-interactions";
+import { InteractionType, InteractionResponseType } from "discord-interactions";
 
 import "dotenv/config";
 import { PORT } from "./utils/config";
 import { authorize } from "./utils/utils";
+import registerCommands, { interaction } from "./utils/registerCommands";
 
 const app = express();
 
@@ -25,18 +20,19 @@ app.post("/api/interactions", async function (req: Request, res: Response) {
 
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name } = data;
+    const reqInteraction = interaction.find((command) => command.name === name);
 
-    if (name === "test") {
-      return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          content: JSON.stringify(req.body)
-        }
-      });
+    if (reqInteraction) {
+      reqInteraction.func(req, res);
     }
   }
 });
 
+app.get("/", async (req: Request, res: Response) => {
+  res.send("<p>Some html</p>");
+});
+
 app.listen(PORT, () => {
+  registerCommands();
   console.log("Listening on port", PORT);
 });
